@@ -1,0 +1,28 @@
+# Environments
+.env
+serviceAccountKey.json
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Dependencies
+node_modules/
+__pycache__/
+*.py[cod]
+
+# Build
+dist/
+build/
+.cache/
+
+# IDEs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

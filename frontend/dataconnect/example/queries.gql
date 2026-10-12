@@ -1,0 +1,99 @@
+mutation CreateUser($name: String!, $email: String!, $role: String!) @auth(level: USER) {
+  user_insert(data: { id_expr: "auth.uid", name: $name, email: $email, role: $role })
+}
+
+mutation UpdateUser($bio: String, $location: String) @auth(level: USER) {
+  user_update(key: { id_expr: "auth.uid" }, data: { bio: $bio, location: $location })
+}
+
+mutation DeleteUser @auth(level: USER) {
+  user_delete(key: { id_expr: "auth.uid" })
+}
+
+query GetUser @auth(level: USER) {
+  user(key: { id_expr: "auth.uid" }) { name email role bio location ratingAverage }
+}
+
+query ListUsers @auth(level: PUBLIC, insecureReason: "Listing public user profiles for directory") {
+  users { name role ratingAverage }
+}
+
+mutation CreateSkill($name: String!, $category: String!) @auth(level: USER) {
+  skill_insert(data: { name: $name, category: $category })
+}
+
+mutation UpdateSkill($id: UUID!, $category: String) @auth(level: USER) {
+  skill_update(key: { id: $id }, data: { category: $category })
+}
+
+mutation DeleteSkill($id: UUID!) @auth(level: USER) {
+  skill_delete(key: { id: $id })
+}
+
+query GetSkill($id: UUID!) @auth(level: PUBLIC, insecureReason: "Publicly visible skills") {
+  skill(id: $id) { name category }
+}
+
+query ListSkills @auth(level: PUBLIC, insecureReason: "Public list of skills") {
+  skills { name category }
+}
+
+mutation CreateListing($title: String!, $description: String!, $price: Float!, $duration: Int!, $skillId: UUID!) @auth(level: USER) {
+  listing_insert(data: { title: $title, description: $description, price: $price, duration: $duration, mentorId_expr: "auth.uid", skillId: $skillId })
+}
+
+mutation UpdateListing($id: UUID!, $price: Float) @auth(level: USER) {
+  listing_update(key: { id: $id }, data: { price: $price })
+}
+
+mutation DeleteListing($id: UUID!) @auth(level: USER) {
+  listing_delete(key: { id: $id })
+}
+
+query GetListing($id: UUID!) @auth(level: PUBLIC, insecureReason: "Publicly visible mentor listings") {
+  listing(id: $id) { title description price mentor { name } skill { name } }
+}
+
+query ListListings @auth(level: PUBLIC, insecureReason: "Public list of mentor listings") {
+  listings { title price duration }
+}
+
+mutation CreateBooking($listingId: UUID!, $date: Timestamp!) @auth(level: USER) {
+  booking_insert(data: { listingId: $listingId, studentId_expr: "auth.uid", date: $date, status: "PENDING" })
+}
+
+mutation UpdateBooking($id: UUID!, $status: String!) @auth(level: USER) {
+  booking_update(key: { id: $id }, data: { status: $status })
+}
+
+mutation DeleteBooking($id: UUID!) @auth(level: USER) {
+  booking_delete(key: { id: $id })
+}
+
+query GetBooking($id: UUID!) @auth(level: USER) {
+  booking(id: $id) { status date listing { title } student { name } }
+}
+
+query ListMyBookings @auth(level: USER) {
+  bookings(where: { studentId: { eq_expr: "auth.uid" } }) { status date listing { title } }
+}
+
+mutation CreateReview($bookingId: UUID!, $rating: Int!, $comment: String!) @auth(level: USER) {
+  review_insert(data: { bookingId: $bookingId, rating: $rating, comment: $comment, reviewerId_expr: "auth.uid" })
+}
+
+mutation UpdateReview($id: UUID!, $comment: String) @auth(level: USER) {
+  review_update(key: { id: $id }, data: { comment: $comment })
+}
+
+mutation DeleteReview($id: UUID!) @auth(level: USER) {
+  review_delete(key: { id: $id })
+}
+
+query GetReview($id: UUID!) @auth(level: PUBLIC, insecureReason: "Public reviews") {
+  review(id: $id) { rating comment reviewer { name } }
+}
+
+query ListReviews @auth(level: PUBLIC, insecureReason: "Public list of reviews") {
+  reviews { rating comment }
+}

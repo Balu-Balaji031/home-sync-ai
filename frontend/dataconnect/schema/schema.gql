@@ -1,0 +1,36 @@
+type User @table {
+  name: String!
+  email: String!
+  role: String!
+  bio: String
+  location: String
+  ratingAverage: Float
+}
+
+type Skill @table {
+  name: String!
+  category: String!
+}
+
+type Listing @table {
+  title: String!
+  description: String!
+  price: Float!
+  duration: Int!
+  mentor: User!
+  skill: Skill!
+}
+
+type Booking @table {
+  status: String!
+  date: Timestamp!
+  listing: Listing!
+  student: User!
+}
+
+type Review @table {
+  rating: Int!
+  comment: String!
+  booking: Booking!
+  reviewer: User!
+}

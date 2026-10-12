@@ -1,0 +1,46 @@
+mutation SeedData @transaction {
+  user_insertMany(data: [
+    { name: "Alice", email: "alice@example.com", role: "Mentor" },
+    { name: "Bob", email: "bob@example.com", role: "Student" },
+    { name: "Charlie", email: "charlie@example.com", role: "Mentor" }
+  ])
+  skill_insertMany(data: [
+    { name: "React", category: "Frontend" },
+    { name: "Node.js", category: "Backend" },
+    { name: "GraphQL", category: "API" }
+  ])
+  listing_insertMany(data: [
+    {
+      title: "React Workshop",
+      description: "Learn React from scratch",
+      price: 50.0,
+      duration: 120,
+      mentor: { id: "00000000-0000-0000-0000-000000000000" },
+      skill: { id: "00000000-0000-0000-0000-000000000000" }
+    },
+    {
+      title: "Node API Design",
+      description: "Building scalable APIs",
+      price: 75.0,
+      duration: 90,
+      mentor: { id: "00000000-0000-0000-0000-000000000002" },
+      skill: { id: "00000000-0000-0000-0000-000000000001" }
+    }
+  ])
+  booking_insertMany(data: [
+    {
+      status: "Confirmed",
+      date: "2023-12-01T10:00:00Z",
+      listing: { id: "00000000-0000-0000-0000-000000000000" },
+      student: { id: "00000000-0000-0000-0000-000000000001" }
+    }
+  ])
+  review_insertMany(data: [
+    {
+      rating: 5,
+      comment: "Great mentor!",
+      booking: { id: "00000000-0000-0000-0000-000000000000" },
+      reviewer: { id: "00000000-0000-0000-0000-000000000001" }
+    }
+  ])
+}
